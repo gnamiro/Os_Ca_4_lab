@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "barrier.h"
 
 int
 sys_fork(void)
@@ -88,4 +89,19 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+int sys_barrier_init(void)
+{
+  int variable;
+  if(argint(0, &variable) < 0){
+    cprintf("Kernel: System call returning -1\n");
+    return -1;
+  }
+  return barrier_init(variable);
+}
+
+int sys_barrier_check(void)
+{
+  return barrier_check();
 }
