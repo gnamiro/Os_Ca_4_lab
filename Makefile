@@ -1,4 +1,5 @@
 OBJS = \
+	barrier.o\
 	bio.o\
 	console.o\
 	exec.o\
@@ -28,7 +29,7 @@ OBJS = \
 	uart.o\
 	vectors.o\
 	vm.o\
-	barrier.o\
+
 
 # Cross-compiling (e.g., on Mac OS X)
 # TOOLPREFIX = i386-jos-elf
