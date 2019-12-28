@@ -16,6 +16,7 @@ initrelock(struct reentrantlock *lk, char *name)
   lk->locked = 0;
   lk->cpu = 0;
   lk->rec_counter =0;
+  lk->pid = -1;
 }
 
 // Acquire the lock.
@@ -29,7 +30,7 @@ relockacquire(struct reentrantlock *lk)
 
   
   // The xchg is atomic.            lk->cpu != mycpu() --> Check whether this cpu is holding the same lock.
-  while(xchg(&lk->locked, 1) != 0 && lk->cpu != mycpu())
+  while(xchg(&lk->locked, 1) != 0 && lk->pid != myproc()->pid)
     ;
 
   // Tell the C compiler and the processor to not move loads or stores
@@ -40,6 +41,7 @@ relockacquire(struct reentrantlock *lk)
   // Record info about lock acquisition for debugging.
   struct cpu *cpu = mycpu();
   lk->cpu = cpu;
+  lk->pid = myproc()->pid;
   lk->rec_counter++;
   getcallerpcs(&lk, lk->pcs);
 }
