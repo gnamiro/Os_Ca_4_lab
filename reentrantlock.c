@@ -31,7 +31,8 @@ relockacquire(struct reentrantlock *lk)
   // The xchg is atomic.        Check whether this proc is holding the same lock.
   while(xchg(&lk->locked, 1) != 0 && lk->pid != myproc()->pid)
     ;
-
+  if(lk->pid == myproc()->pid)
+    popcli();
   // Tell the C compiler and the processor to not move loads or stores
   // past this point, to ensure that the critical section's memory
   // references happen after the lock is acquired.

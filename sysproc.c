@@ -122,7 +122,6 @@ int sys_reentrant_lock(void){
   relockacquire(&lock);
   cprintf("oops120\n");
 
-  mycpu()->ncli = 1;
   relockrelease(&lock);
   cprintf("oops122\n");
 
