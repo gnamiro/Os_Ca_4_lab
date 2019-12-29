@@ -95,17 +95,22 @@ sys_uptime(void)
 
 int sys_barrier_init(void)
 {
-  int variable;
-  if(argint(0, &variable) < 0){
+  int variable, i;
+  if(argint(0, &variable) < 0 || argint(1, &i) < 0){
     cprintf("Kernel: System call returning -1\n");
     return -1;
   }
-  return barrier_init(variable);
+  return barrier_init(variable, i);
 }
 
 int sys_barrier_check(void)
 {
-  return barrier_check();
+    int i;
+    if(argint(0, &i) < 0){
+      cprintf("Kernel: System call returning -1\n");
+      return -1;
+    }
+    return barrier_check(i);
 }
 
 int sys_reentrant_lock(void){
@@ -129,7 +134,7 @@ int sys_reentrant_lock(void){
   cprintf("acquire spinlock \n");
   acquire(&_lock);
   cprintf("it cannot be happened\n");
-  
+
   release(&_lock);
   cprintf("okay every thing is absolutley wrong\n");
   return 1;

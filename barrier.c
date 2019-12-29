@@ -1,4 +1,4 @@
-/*----------xv6 sync lab----------*/
+
 #include "types.h"
 #include "x86.h"
 #include "spinlock.h"
@@ -7,46 +7,48 @@
 
 //define any variables needed here
 
-struct spinlock barrierlock;
-
-int num; // size of barrier
 
 
-void barrierlockinit(void) {
+struct barrier{
+    struct spinlock lock;
+    int num; // size of barrier
+};
 
-    initlock(&barrierlock, "barrierlock");
+struct barrier barriers[100];
+
+void barrierlockinit(int i) {
+
+    initlock(&barriers[i].lock, "barrierlock");
     // initlock(&barrierlock2, "barrierlock2");
 
 }
 
 int
-barrier_init(int n)
+barrier_init(int n, int i)
 {
-    num = n;
+    barriers[i].num = n;
     return 0;
 }
 
 int
-barrier_check(void)
+barrier_check(int i)
 {
 
-    acquire(&barrierlock);
+    acquire(&barriers[i].lock);
 
-    num--;
+    barriers[i].num--;
 
-    if (num == 0) {
-        wakeup(&num);
+    if (barriers[i].num == 0) {
+        wakeup(&barriers[i].num);
 
     }
-    else if (num > 0) {
-        sleep(&num, &barrierlock);
+    else if (barriers[i].num > 0) {
+        sleep(&barriers[i].num, &barriers[i].lock);
     }
 
 
-    release(&barrierlock);
+    release(&barriers[i].lock);
 
 
     return 0;
 }
-
-/*----------xv6 sync lock end----------*/
