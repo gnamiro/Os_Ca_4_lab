@@ -22,3 +22,4 @@
 #define SYS_close  21
 #define SYS_barrier_init 22
 #define SYS_barrier_check 23
+#define SYS_reentrant_lock 24

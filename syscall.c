@@ -105,6 +105,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_barrier_check(void);
 extern int sys_barrier_init(void);
+extern int sys_reentrant_lock(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -130,6 +131,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_barrier_init] sys_barrier_init,
 [SYS_barrier_check] sys_barrier_check,
+[SYS_reentrant_lock] sys_reentrant_lock,
 };
 
 void

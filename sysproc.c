@@ -7,6 +7,8 @@
 #include "mmu.h"
 #include "proc.h"
 #include "barrier.h"
+#include "reentrantlock.h"
+#include "spinlock.h"
 
 int
 sys_fork(void)
@@ -104,4 +106,32 @@ int sys_barrier_init(void)
 int sys_barrier_check(void)
 {
   return barrier_check();
+}
+
+int sys_reentrant_lock(void){
+  struct reentrantlock lock;
+  struct spinlock _lock;
+
+  initrelock(&lock,"reentrantLock");
+  initlock(&_lock,"spinlock");
+
+  relockacquire(&lock);
+  cprintf("oops\n");
+  relockacquire(&lock);
+  cprintf("oops118\n");
+  relockacquire(&lock);
+  cprintf("oops120\n");
+
+  mycpu()->ncli = 1;
+  relockrelease(&lock);
+  cprintf("oops122\n");
+
+  acquire(&_lock);
+  cprintf("okay\n");
+  acquire(&_lock);
+  cprintf("what it can't be\n");
+  
+  release(&_lock);
+  cprintf("okay now it is getting intresting\n");
+  return 1;
 }

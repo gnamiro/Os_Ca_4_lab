@@ -41,3 +41,7 @@ int atoi(const char*);
 
 int barrier_init(int);
 int barrier_check(void);
+
+
+// sample for reentrant lock
+int reentrant_lock(void);

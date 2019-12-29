@@ -4,6 +4,7 @@ struct file;
 struct inode;
 struct pipe;
 struct proc;
+struct reentrantlock;
 struct rtcdate;
 struct spinlock;
 struct sleeplock;
@@ -120,6 +121,11 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
+
+//reentrantlock.c
+void initrelock(struct reentrantlock*, char*);
+void relockacquire(struct reentrantlock*);
+void relockrelease(struct reentrantlock*);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
