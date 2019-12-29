@@ -116,21 +116,21 @@ int sys_reentrant_lock(void){
   initlock(&_lock,"spinlock");
 
   relockacquire(&lock);
-  cprintf("oops\n");
+  cprintf("acquire reentrant lock\n");
   relockacquire(&lock);
-  cprintf("oops118\n");
+  cprintf("acquire reentrant lock again\n");
   relockacquire(&lock);
-  cprintf("oops120\n");
+  cprintf("acquiret reentrant lock again again\n");
 
   relockrelease(&lock);
-  cprintf("oops122\n");
+  cprintf("release reentrant lock\n");
 
   acquire(&_lock);
-  cprintf("okay\n");
+  cprintf("acquire spinlock \n");
   acquire(&_lock);
-  cprintf("what it can't be\n");
+  cprintf("it cannot be happened\n");
   
   release(&_lock);
-  cprintf("okay now it is getting intresting\n");
+  cprintf("okay every thing is absolutley wrong\n");
   return 1;
 }
